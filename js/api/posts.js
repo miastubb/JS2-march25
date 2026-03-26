@@ -33,3 +33,4 @@ export function deletePost(id) {
     method: "DELETE",
   });
 }
+// Additional functions for liking/unliking posts, adding comments, etc. can be added here as needed.
