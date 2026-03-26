@@ -1,23 +1,20 @@
 import { getToken } from "../storage/token.js";
 import { getApiKey } from "../storage/apiKey.js";
-
-export const CONFIG = {
-  BASE_URL: "https://v2.api.noroff.dev",
-};
+import { CONFIG } from "./config.js";
 
 export async function apiRequest(path, options = {}) {
   const url = `${CONFIG.BASE_URL}${path}`;
 
   const headers = {
     "Content-Type": "application/json",
-    ...CONFIG(options.headers || {}),
+    ...(options.headers || {}),
   };
 
   const token = getToken();
   const apiKey = getApiKey();
 
   if (token) {
-    headers["Authorization"] = `Bearer ${token}`;
+    headers.Authorization = `Bearer ${token}`;
   }
 
   if (apiKey) {
