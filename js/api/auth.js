@@ -1,6 +1,13 @@
 import { apiRequest } from './requests.js';
-import { saveToken } from '../storage/token';
-import { saveApiKey } from '../storage/apiKey';
+import { saveToken } from '../storage/token.js';
+import { saveApiKey } from '../storage/apiKey.js';
+
+export function registerUser({ name, email, password }) {
+  return apiRequest("/auth/register", {
+    method: "POST",
+    body: JSON.stringify({ name, email, password }),
+  });
+}
 
 export async function login(email, password) {
   const loginResponse = await apiRequest("/auth/login", {
@@ -23,7 +30,7 @@ export async function login(email, password) {
 
    const apiKey = apiKeyResponse?.data?.key;
 
-   if (!apiKey) {
+   if (apiKey) {
     saveApiKey(apiKey);
    }
 
