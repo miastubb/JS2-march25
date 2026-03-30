@@ -30,9 +30,11 @@ export async function loginUser(email, password) {
 
    const apiKey = apiKeyResponse?.data?.key;
 
-   if (apiKey) {
-    saveApiKey(apiKey);
+   if (!apiKey) {
+    throw new Error("Login succeded but no API key was created");
+
    }
 
-   return loginResponse;
+  saveApiKey(apiKey);
+  return loginResponse;
 }
