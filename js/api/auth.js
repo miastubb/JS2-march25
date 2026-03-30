@@ -9,7 +9,7 @@ export function registerUser({ name, email, password }) {
   });
 }
 
-export async function login(email, password) {
+export async function loginUser(email, password) {
   const loginResponse = await apiRequest("/auth/login", {
     method: 'POST',
     body: JSON.stringify({ email, password }),
