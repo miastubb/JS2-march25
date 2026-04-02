@@ -3,5 +3,5 @@ export const CONFIG = {
 };
 
 export const BASE_PATH = window.location.hostname.includes("github.io")
-  ? "/your-repo-name/"
+  ? "/JS2-march25/"
   : "/";

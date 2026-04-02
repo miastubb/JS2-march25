@@ -1,4 +1,4 @@
-import { getToken } from "../storage/token";
+import { getToken } from "../storage/token.js";
 
 export function requireAuth() {
   const token = getToken();
