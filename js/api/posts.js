@@ -1,13 +1,13 @@
-import { apiRequest } from "./requests";
+import { apiRequest } from "./requests.js";
 
 export function getPosts({ limit = 12, sort = "created", sortOrder = "desc" } = {}) {
   const params = new URLSearchParams({
-    limit,
+    limit: String(limit),
     sort,
     sortOrder,
   });
 
-  return apiRequest("GET", "/posts", { params });
+  return apiRequest(`/social/posts?${params.toString()}`);
 }
 
 export function createPost(data) {
@@ -33,4 +33,3 @@ export function deletePost(id) {
     method: "DELETE",
   });
 }
-// Additional functions for liking/unliking posts, adding comments, etc. can be added here as needed.
