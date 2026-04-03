@@ -1,5 +1,6 @@
 import { getToken, removeToken } from "../storage/token.js";
 import { BASE_PATH } from "../api/config.js";
+import { removeApiKey } from "../storage/apiKey.js";
 
 export function renderHeader() {
   const header = document.getElementById("site-header");
@@ -31,7 +32,10 @@ export function renderHeader() {
 
     logoutBtn?.addEventListener("click", () => {
       removeToken();
-      window.location.href = `${BASE_PATH}index.html`;
+      removeApiKey();
+      removeProfile();
+
+        window.location.href = `${BASE_PATH}pages/login.html`;
     });
   }
 }
