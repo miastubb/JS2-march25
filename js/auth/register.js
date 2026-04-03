@@ -1,7 +1,5 @@
-import { renderLayout } from "../components/layout.js";
 import { registerUser } from "../api/auth.js";
 
-renderLayout();
 
 const root = document.getElementById("app");
 
