@@ -1,6 +1,7 @@
 import { getToken, removeToken } from "../storage/token.js";
-import { BASE_PATH } from "../api/config.js";
 import { removeApiKey } from "../storage/apiKey.js";
+import { removeProfile } from "../storage/profile.js";
+import { BASE_PATH } from "../api/config.js";
 
 export function renderHeader() {
   const header = document.getElementById("site-header");
