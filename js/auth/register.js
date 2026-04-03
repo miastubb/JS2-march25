@@ -3,7 +3,7 @@ import { registerUser } from "../api/auth.js";
 
 renderLayout();
 
-const root = document.getElementById("page-root");
+const root = document.getElementById("app");
 
 root.innerHTML = `
   <section class="auth-page">
@@ -106,10 +106,13 @@ function validateRegister({ name,  email, password}) {
   if (!email) {
     setFieldError("email", "Email is required");
     ok = false;
-  } else if (!email.endsWith("@stud.noroff.no")) {
-    setFieldError("email", "Use your stud.noroff.no address");
-   ok = false;
-  }
+  } else if (
+  !email.endsWith("@stud.noroff.no") &&
+  !email.endsWith("@noroff.no")
+) {
+  setFieldError("email", "Use a noroff.no or stud.noroff.no address");
+  ok = false;
+}
 
   if (!password) {
     setFieldError("password", "Password is required");

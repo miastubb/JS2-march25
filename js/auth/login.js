@@ -18,7 +18,7 @@ form.addEventListener("submit", async (event) => {
   formError.textContent = "";
 
   const email = form.elements.email.value.trim();
-  const password = form.elements.password.value.trim();
+  const password = form.elements.password.value;
 
   if (!validateLogin({ email, password })) return;
 
