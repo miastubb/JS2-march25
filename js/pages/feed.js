@@ -14,18 +14,9 @@ async function renderFeed() {
       return;
     }
  
-    root.innerHTML = posts
-      .map( 
-      (post) => `
-      <article>
-        <h2>${post.title}</h2>
-        <p>${post.body}</p>
-        </article>
-        `
-        )
-        .join("");
+    root.innerHTML = posts.map(createPostCard).join("");
   } catch (error) {
-    root.innerHTML = `<p>Error: ${error.message}</p>`;
+    root.innerHTML = `<p> Error: ${error.message}</p>`;
   }
 }
 
