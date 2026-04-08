@@ -14,11 +14,12 @@ export function renderHeader() {
       <a href="${BASE_PATH}index.html" class="nav__brand">App</a>
       <div class="nav__links">
         ${
-          token
-            ? `
-              <a href="${BASE_PATH}pages/profile.html">Profile</a>
-              <button id="logout-btn" type="button">Logout</button>
-            `
+         token
+   ? `
+      <a href="${BASE_PATH}pages/profile.html">Profile</a>
+      <a href="${BASE_PATH}pages/create.html" class="nav__create">Create Post</a>
+      <button id="logout-btn" type="button">Logout</button>
+    `
             : `
               <a href="${BASE_PATH}pages/login.html">Login</a>
               <a href="${BASE_PATH}pages/register.html">Register</a>

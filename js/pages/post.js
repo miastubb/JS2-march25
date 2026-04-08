@@ -29,10 +29,14 @@ async function renderPost() {
     }
 
     const profile = getProfile();
-    const isOwner = profile?.name === post.author?.name;
 
+const currentUserName = profile?.name?.trim().toLowerCase();
+const ownerName = post.author?.name?.trim().toLowerCase();
+
+const isOwner = currentUserName && ownerName && currentUserName === ownerName;
     root.innerHTML = `
       <article class="post">
+        <a class="post__back" href="/index.html">← Back to feed</a>
         <h1 class="post__title">${post.title || "Untitled post"}</h1>
 
         ${
