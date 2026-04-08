@@ -17,7 +17,7 @@ export function renderHeader() {
          token
    ? `
       <a href="${BASE_PATH}pages/profile.html">Profile</a>
-      <a href="${BASE_PATH}pages/create.html" class="nav__create">Create Post</a>
+      <a href="${BASE_PATH}pages/create.html" class="nav__create">Create</a>
       <button id="logout-btn" type="button">Logout</button>
     `
             : `
