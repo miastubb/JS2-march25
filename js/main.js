@@ -8,6 +8,10 @@ if (page === "feed") {
   import("./pages/feed.js");
 }
 
+if (page === "profile") {
+  import("./pages/profile.js");
+}
+
 if (page === "post") {
   import("./pages/post.js");
 }
