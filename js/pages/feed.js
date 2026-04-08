@@ -1,4 +1,5 @@
 import { getPosts } from "../api/posts.js";
+import { createPostCard } from "../components/postCard.js";
 
 const root = document.getElementById("app");
 
@@ -13,10 +14,10 @@ async function renderFeed() {
       root.innerHTML = "<p>No posts found.</p>";
       return;
     }
- 
+
     root.innerHTML = posts.map(createPostCard).join("");
   } catch (error) {
-    root.innerHTML = `<p> Error: ${error.message}</p>`;
+    root.innerHTML = `<p>Error: ${error.message}</p>`;
   }
 }
 
