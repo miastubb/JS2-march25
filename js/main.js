@@ -12,6 +12,9 @@ if (page === "post") {
   import("./pages/post.js");
 }
 
+if (page === "create") {
+  import("./pages/create.js");
+}
 
 if (page === "login") {
   import("./auth/login.js");
