@@ -13,7 +13,12 @@ export function createPostCard(post) {
       <a class="post-card__link" href="/pages/post.html?id=${post.id}">
         ${
           media
-            ? `<img class="post-card__image" src="${media}" alt="${alt}">`
+            ? `<img 
+    class="post-card__image" 
+    src="${media}" 
+    alt="${alt}" 
+    fetchpriority="high"
+  >`
             : ""
         }
         <div class="post-card__content">
