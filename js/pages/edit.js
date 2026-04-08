@@ -32,8 +32,8 @@ async function renderEditPage() {
     }
 
     const profile = getProfile();
-    const currentUserName = profile?.name;
-    const ownerName = post.author?.name;
+    const currentUserName = profile?.name?.trim().toLowerCase();
+    const ownerName = post.author?.name?.trim().toLowerCase();
 
     if (!currentUserName || currentUserName !== ownerName) {
       root.innerHTML = "<p>You are not allowed to edit this post.</p>";

@@ -1,6 +1,7 @@
 import { apiRequest } from './requests.js';
 import { saveToken } from '../storage/token.js';
 import { saveApiKey } from '../storage/apiKey.js';
+import { saveUserProfile } from "../storage/profile.js";
 
 export function registerUser({ name, email, password }) {
   return apiRequest("/auth/register", {
@@ -22,6 +23,7 @@ export async function loginUser(email, password) {
   }
 
   saveToken(accessToken);
+  saveUserProfile(loginResponse.data);
 
   const apiKeyResponse = await apiRequest("/auth/create-api-key", {
     method: "POST",
