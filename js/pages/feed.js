@@ -6,8 +6,13 @@ const root = document.getElementById("app");
 async function renderFeed() {
   root.innerHTML = "<p>Loading...</p>";
 
-  try {
-    const response = await getPosts();
+   try {
+    const response = await getPosts({
+      limit: 12,
+      sort: "created",
+      sortOrder: "desc",
+    });
+
     const posts = response.data;
 
     if (!posts.length) {
