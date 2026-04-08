@@ -10,6 +10,12 @@ export function getPosts({ limit = 12, sort = "created", sortOrder = "desc" } = 
   return apiRequest(`/social/posts?${params.toString()}`);
 }
 
+export function getPostById(id) {
+  if (!id) throw new Error("Post ID is required");
+
+  return apiRequest(`/social/posts/${id}`);
+}
+
 export function createPost(data) {
   return apiRequest("/social/posts", {
     method: "POST",
