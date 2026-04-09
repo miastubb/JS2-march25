@@ -22,7 +22,8 @@ async function renderFeed() {
 
     root.innerHTML = posts.map(createPostCard).join("");
   } catch (error) {
-    root.innerHTML = `<p>Error: ${error.message}</p>`;
+     console.error("Failed to load feed:", error);
+    root.innerHTML = "<p>Unable to load posts right now. Please try again shortly.</p>";
   }
 }
 
