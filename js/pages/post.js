@@ -1,6 +1,7 @@
 import { BASE_PATH } from "../api/config.js";
 import { getPostById, deletePost } from "../api/posts.js";
 import { getProfile } from "../storage/profile.js";
+import { getToken } from "../storage/token.js";
 import { createButton } from "../components/button.js";
 
 const root = document.getElementById("app");
@@ -11,6 +12,22 @@ function getPostIdFromUrl() {
 }
 
 async function renderPost() {
+  const token = getToken();
+
+  if (!token) {
+    root.innerHTML = `
+      <section class="guest-state">
+        <h1>Welcome</h1>
+        <p>Please log in or register to view posts.</p>
+        <div class="guest-state__actions">
+          <a class="button" href="${BASE_PATH}account/login.html">Login</a>
+          <a class="button" href="${BASE_PATH}account/register.html">Register</a>
+        </div>
+      </section>
+    `;
+    return;
+  }
+
   root.innerHTML = "<p>Loading post...</p>";
 
   const id = getPostIdFromUrl();
@@ -77,12 +94,14 @@ async function renderPost() {
           await deletePost(post.id);
           window.location.href = BASE_PATH;
         } catch (error) {
-          root.innerHTML += `<p>Error deleting post: ${error.message}</p>`;
+          root.innerHTML += `<p>Unable to delete post right now. Please try again.</p>`;
+          console.error("Failed to delete post:", error);
         }
       });
     }
   } catch (error) {
-    root.innerHTML = `<p>Error loading post: ${error.message}</p>`;
+    console.error("Failed to load post:", error);
+    root.innerHTML = "<p>Unable to load this post right now. Please try again shortly.</p>";
   }
 }
 

@@ -12,7 +12,7 @@ async function renderFeed() {
     root.innerHTML = `
       <section class="guest-state">
         <h1>Welcome</h1>
-        <p>Please log in or register to view the social feed.</p>
+        <p>Please log in or register to view the posts.</p>
         <div class="guest-state__actions">
           <a class="button" href="${BASE_PATH}account/login.html">Login</a>
           <a class="button" href="${BASE_PATH}account/register.html">Register</a>
