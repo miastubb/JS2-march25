@@ -1,4 +1,5 @@
 import { registerUser } from "../api/auth.js";
+import { BASE_PATH } from "../api/config.js";
 
 
 const root = document.getElementById("app");
@@ -135,7 +136,7 @@ form.addEventListener("submit", async (e) => {
   try {
     await registerUser({ name, email, password });
 
-    window.location.href = "./login.html";
+    window.location.href = `${BASE_PATH}account/login.html`;
   } catch (error) {
     formError.textContent = error.message || "Registration failed. Please try again";
   }

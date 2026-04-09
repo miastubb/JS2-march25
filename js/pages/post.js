@@ -1,3 +1,4 @@
+import { BASE_PATH } from "../api/config.js";
 import { getPostById, deletePost } from "../api/posts.js";
 import { getProfile } from "../storage/profile.js";
 import { createButton } from "../components/button.js";
@@ -29,14 +30,13 @@ async function renderPost() {
     }
 
     const profile = getProfile();
+    const currentUserName = profile?.name?.trim().toLowerCase();
+    const ownerName = post.author?.name?.trim().toLowerCase();
+    const isOwner = currentUserName && ownerName && currentUserName === ownerName;
 
-const currentUserName = profile?.name?.trim().toLowerCase();
-const ownerName = post.author?.name?.trim().toLowerCase();
-
-const isOwner = currentUserName && ownerName && currentUserName === ownerName;
     root.innerHTML = `
       <article class="post">
-        <a class="post__back" href="/index.html">← Back to feed</a>
+        <a class="post__back" href="${BASE_PATH}index.html">← Back to feed</a>
         <h1 class="post__title">${post.title || "Untitled post"}</h1>
 
         ${
@@ -54,7 +54,7 @@ const isOwner = currentUserName && ownerName && currentUserName === ownerName;
         ${
           isOwner
             ? `<div class="post__actions">
-                 <a class="post__edit" href="/pages/edit.html?id=${post.id}">Edit</a>
+                 <a class="post__edit" href="${BASE_PATH}pages/edit.html?id=${post.id}">Edit</a>
                </div>`
             : ""
         }
@@ -75,7 +75,7 @@ const isOwner = currentUserName && ownerName && currentUserName === ownerName;
 
         try {
           await deletePost(post.id);
-          window.location.href = "/index.html";
+          window.location.href = BASE_PATH;
         } catch (error) {
           root.innerHTML += `<p>Error deleting post: ${error.message}</p>`;
         }

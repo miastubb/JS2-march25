@@ -1,3 +1,4 @@
+import { BASE_PATH } from "../api/config.js";
 import { createPost } from "../api/posts.js";
 import { requireAuth } from "../auth/guard.js";
 
@@ -6,16 +7,13 @@ requireAuth();
 const root = document.getElementById("app");
 
 root.innerHTML = `
-     <section class="create-post">
+  <section class="create-post">
     <h1>Create Post</h1>
 
     <form id="create-post-form">
       <input type="text" id="title" placeholder="Title" required />
-      
       <textarea id="body" placeholder="Write your post..." required></textarea>
-      
       <input type="url" id="media" placeholder="Image URL (optional)" />
-
       <button type="submit">Publish</button>
     </form>
 
@@ -52,11 +50,9 @@ form.addEventListener("submit", async (e) => {
 
     message.textContent = "Post created successfully!";
 
-    // redirect after success
     setTimeout(() => {
-      window.location.href = "/index.html";
+      window.location.href = BASE_PATH;
     }, 1000);
-
   } catch (error) {
     message.textContent = `Error: ${error.message}`;
   }

@@ -1,3 +1,5 @@
+import { BASE_PATH } from "../api/config.js";
+
 export function createPostCard(post) {
   const trimmedBody =
     post.body && post.body.length > 120
@@ -10,7 +12,7 @@ export function createPostCard(post) {
 
   return `
     <article class="post-card">
-      <a class="post-card__link" href="/pages/post.html?id=${post.id}">
+      <a class="post-card__link" href="${BASE_PATH}posts/${post.id}">
         ${
           media
             ? `<img 

@@ -1,4 +1,5 @@
 import { loginUser } from "../api/auth.js";
+import { BASE_PATH } from "../api/config.js";
 
 const root = document.getElementById("app");
 
@@ -64,7 +65,7 @@ form.addEventListener("submit", async (event) => {
 
   try {
     await loginUser(email, password);
-    window.location.href = "../index.html";
+    window.location.href = BASE_PATH;
   } catch (error) {
     formError.textContent = error.message || "Login failed";
   }
