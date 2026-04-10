@@ -1,4 +1,4 @@
-import { BASE_PATH } from "../api/config.js";
+import { ROUTES } from "../config/routes.js";
 
 export function createPostCard(post) {
   const trimmedBody =
@@ -12,15 +12,15 @@ export function createPostCard(post) {
 
   return `
     <article class="post-card">
-        <a class="post-card__link" href="${BASE_PATH}pages/post.html?id=${post.id}">
+      <a class="post-card__link" href="${ROUTES.post(post.id)}">
         ${
           media
-            ? `<img 
-    class="post-card__image" 
-    src="${media}" 
-    alt="${alt}" 
-    fetchpriority="high"
-  >`
+            ? `<img
+                class="post-card__image"
+                src="${media}"
+                alt="${alt}"
+                fetchpriority="high"
+              >`
             : ""
         }
         <div class="post-card__content">
