@@ -20,8 +20,8 @@ async function renderPost() {
         <h1>Welcome</h1>
         <p>Please log in or register to view posts.</p>
         <div class="guest-state__actions">
-          <a class="button" href="${BASE_PATH}account/login.html">Login</a>
-          <a class="button" href="${BASE_PATH}account/register.html">Register</a>
+          <a class="button" href="${BASE_PATH}auth/login.html">Login</a>
+          <a class="button" href="${BASE_PATH}auth/register.html">Register</a>
         </div>
       </section>
     `;
