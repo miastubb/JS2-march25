@@ -4,6 +4,7 @@
   border-radius: var(--radius-lg);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
+  margin-bottom: 2rem;
 }
 
 .post-card__link {
