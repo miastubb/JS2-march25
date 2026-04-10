@@ -1,3 +1,4 @@
+import { BASE_PATH } from "../api/config.js";
 import { getPostById, updatePost } from "../api/posts.js";
 import { requireAuth } from "../auth/guard.js";
 import { getProfile } from "../storage/profile.js";
@@ -10,7 +11,6 @@ function getPostIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
 }
-
 
 async function renderEditPage() {
   root.innerHTML = "<p>Loading post...</p>";
@@ -103,7 +103,7 @@ async function renderEditPage() {
 
         await updatePost(id, updatedData);
 
-        window.location.href = `/pages/post.html?id=${id}`;
+        window.location.href = `${BASE_PATH}pages/post.html?id=${id}`;
       } catch (error) {
         message.textContent = `Error: ${error.message}`;
       }
