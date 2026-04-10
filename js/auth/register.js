@@ -136,7 +136,7 @@ form.addEventListener("submit", async (e) => {
   try {
     await registerUser({ name, email, password });
 
-    window.location.href = `${BASE_PATH}account/login.html`;
+    window.location.href = `${BASE_PATH}auth/login.html`;
   } catch (error) {
     formError.textContent = error.message || "Registration failed. Please try again";
   }
