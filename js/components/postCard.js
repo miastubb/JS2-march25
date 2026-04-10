@@ -12,7 +12,7 @@ export function createPostCard(post) {
 
   return `
     <article class="post-card">
-      <a class="post-card__link" href="${BASE_PATH}posts/${post.id}">
+        <a class="post-card__link" href="${BASE_PATH}pages/post.html?id=${post.id}">
         ${
           media
             ? `<img 
