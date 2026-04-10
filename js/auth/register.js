@@ -1,6 +1,5 @@
 import { registerUser } from "../api/auth.js";
-import { BASE_PATH } from "../api/config.js";
-
+import { ROUTES } from "../config/routes.js";
 
 const root = document.getElementById("app");
 
@@ -86,7 +85,7 @@ function setFieldError(name, message) {
   if (el) el.textContent = message || "";
 }
 
-function validateRegister({ name,  email, password}) {
+function validateRegister({ name, email, password }) {
   let ok = true;
 
   setFieldError("name", "");
@@ -106,12 +105,12 @@ function validateRegister({ name,  email, password}) {
     setFieldError("email", "Email is required");
     ok = false;
   } else if (
-  !email.endsWith("@stud.noroff.no") &&
-  !email.endsWith("@noroff.no")
-) {
-  setFieldError("email", "Use a noroff.no or stud.noroff.no address");
-  ok = false;
-}
+    !email.endsWith("@stud.noroff.no") &&
+    !email.endsWith("@noroff.no")
+  ) {
+    setFieldError("email", "Use a noroff.no or stud.noroff.no address");
+    ok = false;
+  }
 
   if (!password) {
     setFieldError("password", "Password is required");
@@ -135,10 +134,8 @@ form.addEventListener("submit", async (e) => {
 
   try {
     await registerUser({ name, email, password });
-
-    window.location.href = `${BASE_PATH}auth/login.html`;
+    window.location.href = ROUTES.login;
   } catch (error) {
     formError.textContent = error.message || "Registration failed. Please try again";
   }
 });
-

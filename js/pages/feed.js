@@ -1,7 +1,7 @@
 import { getPosts } from "../api/posts.js";
 import { createPostCard } from "../components/postCard.js";
 import { getToken } from "../storage/token.js";
-import { BASE_PATH } from "../api/config.js";
+import { ROUTES } from "../config/routes.js";
 
 const root = document.getElementById("app");
 
@@ -14,8 +14,8 @@ async function renderFeed() {
         <h1>Welcome</h1>
         <p>Please log in or register to view the posts.</p>
         <div class="guest-state__actions">
-          <a class="button" href="${BASE_PATH}auth/login.html">Login</a>
-          <a class="button" href="${BASE_PATH}auth/register.html">Register</a>
+          <a class="button" href="${ROUTES.login}">Login</a>
+          <a class="button" href="${ROUTES.register}">Register</a>
         </div>
       </section>
     `;
