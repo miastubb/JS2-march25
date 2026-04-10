@@ -5,6 +5,7 @@ export function getPosts({ limit = 12, sort = "created", sortOrder = "desc" } = 
     limit: String(limit),
     sort,
     sortOrder,
+    _author: "true",
   });
 
   return apiRequest(`/social/posts?${params.toString()}`);
