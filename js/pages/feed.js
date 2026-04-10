@@ -14,8 +14,8 @@ async function renderFeed() {
         <h1>Welcome</h1>
         <p>Please log in or register to view the posts.</p>
         <div class="guest-state__actions">
-          ${BASE_PATH}pages/login.html
-          ${BASE_PATH}pages/register.html
+           <a class="button" href="${BASE_PATH}pages/login.html">Login</a>
+           <a class="button" href="${BASE_PATH}pages/register.html">Register</a>
         </div>
       </section>
     `;
