@@ -89,3 +89,8 @@
   border-color: var(--color-primary);
   background: var(--color-surface);
 }
+
+.post-card__follow-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+}
