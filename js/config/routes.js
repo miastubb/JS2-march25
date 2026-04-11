@@ -6,4 +6,5 @@ export const ROUTES = {
   register: `${BASE_PATH}pages/register.html`,
   post: (id) => `${BASE_PATH}pages/post.html?id=${id}`,
   edit: (id) => `${BASE_PATH}pages/edit.html?id=${id}`,
+  profile: (name) => `${BASE_PATH}pages/profile.html?name=${encodeURIComponent(name)}`,
 };
