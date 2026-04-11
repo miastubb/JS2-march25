@@ -1,4 +1,4 @@
-import { apiRequest } from "./requests";
+import { apiRequest } from "./requests.js";
 
 export async function getUserProfileByName(name) {
   const response = await apiRequest(
