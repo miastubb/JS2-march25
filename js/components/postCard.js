@@ -45,7 +45,12 @@ export function createPostCard(post, options = {}) {
         </a>
 
         <div class="post-card__meta">
-          <p class="post-card__author">By ${author}</p>
+          <a 
+            class="post-card__author" 
+            href="${ROUTES.profile(author)}"
+         >
+            By ${author}
+         </a>
           ${
             !isOwner && actionMarkup
              ? `<div class="post-card__actions">${actionMarkup}</div>` : ""}
