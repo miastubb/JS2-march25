@@ -1,5 +1,9 @@
 import { getPosts } from "../api/posts.js";
-import { getUserProfileByName } from "../api/profiles.js";
+import {
+  getUserProfileByName,
+  followProfile,
+  unfollowProfile,
+} from "../api/profiles.js";
 import { createPostCard } from "../components/postCard.js";
 import { getToken } from "../storage/token.js";
 import { getProfile } from "../storage/profile.js";
@@ -41,24 +45,81 @@ async function getCurrentUserFollowState() {
   }
 }
 
-function createFeedCardMarkup(post, followState) {
-  const authorName = post.author?.name?.trim().toLowerCase() || "";
-  const isFollowing = followState.followingNames.has(authorName);
+function createFollowButtonMarkup(authorName, isFollowing) {
+  if (!authorName) return "";
 
-  const actionMarkup = authorName
-    ? `<button
-         type="button"
-         class="post-card__follow-btn"
-         data-follow-author="${post.author.name}"
-         aria-pressed="${isFollowing ? "true" : "false"}"
-       >
-         ${isFollowing ? "Following" : "Follow"}
-       </button>`
-    : "";
+  return `
+    <button
+      type="button"
+      class="post-card__follow-btn"
+      data-follow-author="${authorName}"
+      aria-pressed="${isFollowing ? "true" : "false"}"
+    >
+      ${isFollowing ? "Following" : "Follow"}
+    </button>
+  `;
+}
+
+function createFeedCardMarkup(post, followState) {
+  const authorName = post.author?.name?.trim() || "";
+  const normalizedAuthorName = authorName.toLowerCase();
+  const isFollowing = followState.followingNames.has(normalizedAuthorName);
+
+  const actionMarkup = createFollowButtonMarkup(authorName, isFollowing);
 
   return createPostCard(post, {
     actionMarkup,
     currentUserName: followState.currentUserName,
+  });
+}
+
+function updateFollowButtons(authorName, isFollowing, followState) {
+  if (!authorName) return;
+
+  const normalizedAuthorName = authorName.trim().toLowerCase();
+
+  if (isFollowing) {
+    followState.followingNames.add(normalizedAuthorName);
+  } else {
+    followState.followingNames.delete(normalizedAuthorName);
+  }
+
+  const buttons = root.querySelectorAll(
+    `[data-follow-author="${CSS.escape(authorName)}"]`
+  );
+
+  buttons.forEach((button) => {
+    button.textContent = isFollowing ? "Following" : "Follow";
+    button.setAttribute("aria-pressed", isFollowing ? "true" : "false");
+    button.disabled = false;
+  });
+}
+
+function attachFeedEvents(followState) {
+  root.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-follow-author]");
+    if (!button) return;
+
+    const authorName = button.dataset.followAuthor?.trim();
+    if (!authorName) return;
+
+    const isFollowing = button.getAttribute("aria-pressed") === "true";
+
+    button.disabled = true;
+
+    try {
+      if (isFollowing) {
+        await unfollowProfile(authorName);
+        updateFollowButtons(authorName, false, followState);
+      } else {
+        await followProfile(authorName);
+        updateFollowButtons(authorName, true, followState);
+      }
+    } catch (error) {
+      console.error("Failed to update follow state:", error);
+      button.disabled = false;
+      window.alert("Unable to update follow status right now. Please try again.");
+    }
   });
 }
 
@@ -105,6 +166,8 @@ async function renderFeed() {
         </div>
       </section>
     `;
+
+    attachFeedEvents(followState);
   } catch (error) {
     console.error("Failed to load feed:", error);
     root.innerHTML = "<p>Unable to load posts right now. Please try again shortly.</p>";
