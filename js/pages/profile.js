@@ -2,6 +2,7 @@ import { getProfile } from "../storage/profile.js";
 import { getPosts } from "../api/posts.js";
 import { createPostCard } from "../components/postCard.js";
 import { requireAuth } from "../auth/guard.js";
+import { getUserProfileByName } from "../api/profiles.js";
 
 requireAuth();
 
@@ -10,20 +11,27 @@ const root = document.getElementById("app");
 async function renderProfile() {
   root.innerHTML = "<p>Loading profile...</p>";
 
-  const profile = getProfile();
+const params = new URLSearchParams(window.location.search);
+const profileNameFromURL = params.get("name");
 
-  if (!profile) {
-    root.innerHTML = "<p>User not found.</p>";
-    return;
-  }
+const storedProfile = getProfile();
 
-  const username = profile.name;
+if (!storedProfile) {
+  root.innerHTML = "<p>User not found.</p>";
+  return;
+}
+
+const currentUsername = storedProfile.name;
+const username = profileNameFromURL || currentUsername;
+const isOwnProfile = username === currentUsername;
 
   try {
-    const response = await getPosts({ limit: 20 });
-    const posts = response.data || [];
+     const profileData = await getUserProfileByName(username);
 
-    const userPosts = posts.filter((post) => post.author?.name === username);
+     const response = await getPosts({ limit: 20 });
+     const posts = response.data || [];
+
+     const userPosts = posts.filter((post) => post.author?.name === username);
 
     const localAvatar = "../assets/images/profile-illustration-bw-cats.webp";
     const avatarMarkup = `<img
@@ -33,7 +41,7 @@ async function renderProfile() {
       width="300"
       height="300"
       decoding="async"
-    >`;
+   >`;
 
     root.innerHTML = `
       <section class="profile-layout">
@@ -43,12 +51,12 @@ async function renderProfile() {
           </div>
 
           <h1 class="profile__title">${username}</h1>
-          <p class="profile__email">${profile.email || ""}</p>
+          <p class="profile__email">${profileData.email || ""}</p>
           <p class="profile__meta">${userPosts.length} posts</p>
         </aside>
 
         <section class="profile-content">
-          <h2>Your posts</h2>
+          <h2>${isOwnProfile ? "Your posts" : `${username}'s posts`}</h2>
 
           <div class="profile__posts">
             ${
