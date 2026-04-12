@@ -6,11 +6,23 @@ import { createButton } from "../components/button.js";
 
 const root = document.getElementById("app");
 
+/**
+ * Reads the post ID from the current page URL query string.
+ *
+ * @returns {string|null} The post ID from the URL, or null if no ID is present.
+ */
 function getPostIdFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("id");
 }
 
+/**
+ * Fetches and renders a single post based on the ID in the URL.
+ * Handles guest state, invalid ID state, missing post state, owner actions, and errors.
+ *
+ * @async
+ * @returns {Promise<void>}
+ */
 async function renderPost() {
   const token = getToken();
 
