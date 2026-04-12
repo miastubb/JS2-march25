@@ -11,6 +11,8 @@ import { BASE_PATH } from "../api/config.js";
 import { ROUTES } from "../config/routes.js";
 
 const root = document.getElementById("app");
+let allPosts = [];
+let currentFollowState = null;
 const MOBILE_BREAKPOINT = 768;
 
 async function getCurrentUserFollowState() {
@@ -114,6 +116,20 @@ function createFollowingSidebarContent(followState) {
       }
     </div>
   `;
+}
+
+function renderPosts(postsToRender) {
+  const postsContainer = root.querySelector(".feed__posts");
+  if (!postsContainer || !currentFollowState) return;
+
+  if (!postsToRender.length) { 
+    postsContainer.innerHTML = "<p class='feed__empty'>No posts match your search.</p>";
+    return;
+  }
+
+  postsContainer.innerHTML = postsToRender
+    .map((post) => createFeedCardMarkup(post, currentFollowState))
+    .join("");
 }
 
 function renderFollowingSidebar(followState) {
@@ -293,57 +309,89 @@ async function renderFeed() {
 
   root.innerHTML = "<p>Loading...</p>";
 
-  try {
-    const [postsResponse, followState] = await Promise.all([
-      getPosts({
-        limit: 12,
-        sort: "created",
-        sortOrder: "desc",
-      }),
-      getCurrentUserFollowState(),
-    ]);
+ try {
+  const [postsResponse, followState] = await Promise.all([
+    getPosts({
+      limit: 12,
+      sort: "created",
+      sortOrder: "desc",
+    }),
+    getCurrentUserFollowState(),
+  ]);
 
-    const posts = postsResponse.data || [];
+  allPosts = postsResponse.data || [];
+  currentFollowState = followState;
 
-    if (!posts.length) {
-      root.innerHTML = "<p>No posts found.</p>";
-      return;
-    }
-
-    root.innerHTML = `
-      <section class="feed-layout">
-        <button
-          class="feed-sidebar-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="following-panel"
-          hidden
-        >
-          Following (${followState.followingProfiles.length})
-        </button>
-
-        <aside
-          id="following-panel"
-          class="feed-sidebar-panel"
-          aria-labelledby="following-heading"
-        ></aside>
-
-        <section class="feed-main" aria-labelledby="feed-heading">
-          <h1 id="feed-heading" class="feed-main__title">Latest posts</h1>
-          <div class="feed__posts">
-            ${posts.map((post) => createFeedCardMarkup(post, followState)).join("")}
-          </div>
-        </section>
-      </section>
-    `;
-
-    renderFollowingSidebar(followState);
-    syncSidebarVisibility();
-    attachFeedEvents(followState);
-  } catch (error) {
-    console.error("Failed to load feed:", error);
-    root.innerHTML = "<p>Unable to load posts right now. Please try again shortly.</p>";
+  if (!allPosts.length) {
+    root.innerHTML = "<p>No posts found.</p>";
+    return;
   }
+
+  root.innerHTML = `
+    <section class="feed-layout">
+      <button
+        class="feed-sidebar-toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="following-panel"
+        hidden
+      >
+        Following (${followState.followingProfiles.length})
+      </button>
+
+      <aside
+        id="following-panel"
+        class="feed-sidebar-panel"
+        aria-labelledby="following-heading"
+      ></aside>
+
+      <section class="feed-main" aria-labelledby="feed-heading">
+        <h1 id="feed-heading" class="feed-main__title">Latest posts</h1>
+
+        <input
+          type="search"
+          class="feed-search"
+          placeholder="Search posts..."
+          aria-label="Search posts"
+        >
+
+        <div class="feed__posts">
+          ${allPosts.map((post) => createFeedCardMarkup(post, followState)).join("")}
+        </div>
+      </section>
+    </section>
+  `;
+
+  renderFollowingSidebar(followState);
+  syncSidebarVisibility();
+  attachFeedEvents(followState);
+
+  const searchInput = root.querySelector(".feed-search");
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (event) => {
+      const searchTerm = event.target.value.trim().toLowerCase();
+
+      if (!searchTerm) {
+        renderPosts(allPosts);
+        return;
+      }
+
+      const filteredPosts = allPosts.filter((post) => {
+        const title = post.title?.toLowerCase() || "";
+        const body = post.body?.toLowerCase() || "";
+
+        return title.includes(searchTerm) || body.includes(searchTerm);
+      });
+
+      renderPosts(filteredPosts);
+    });
+  }
+
+} catch (error) {
+  console.error("Failed to load feed:", error);
+  root.innerHTML = "<p>Unable to load posts right now. Please try again shortly.</p>";
+}
 }
 
 renderFeed();
