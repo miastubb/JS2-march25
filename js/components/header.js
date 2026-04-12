@@ -3,6 +3,13 @@ import { removeApiKey } from "../storage/apiKey.js";
 import { removeProfile } from "../storage/profile.js";
 import { BASE_PATH } from "../api/config.js";
 
+/**
+ * Renders the site header navigation based on authentication state.
+ * Shows profile, create, and logout options for logged-in users, and
+ * login/register links for guests. Also attaches logout behavior.
+ *
+ * @returns {void}
+ */
 export function renderHeader() {
   const header = document.getElementById("site-header");
   if (!header) return;

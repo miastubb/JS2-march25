@@ -1,5 +1,16 @@
 import { ROUTES } from "../config/routes.js";
 
+/**
+ * Generates HTML markup for a reusable post card component.
+ * Handles optional media, trims long body text, and conditionally
+ * displays action buttons based on ownership.
+ *
+ * @param {object} post - The post data object.
+ * @param {object} [options={}] - Optional configuration for rendering.
+ * @param {string} [options.actionMarkup] - HTML string for additional actions (e.g. follow button).
+ * @param {string} [options.currentUserName] - Name of the currently logged-in user.
+ * @returns {string} HTML string representing the post card.
+ */
 export function createPostCard(post, options = {}) {
   const {
     actionMarkup = "",

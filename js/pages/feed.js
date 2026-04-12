@@ -15,6 +15,17 @@ let allPosts = [];
 let currentFollowState = null;
 const MOBILE_BREAKPOINT = 768;
 
+/**
+ * Fetches the logged-in user's follow data and returns a normalized follow state
+ * used by the feed page for follow buttons and sidebar rendering.
+ *
+ * @async
+ * @returns {Promise<{
+ *   currentUserName: string,
+ *   followingNames: Set<string>,
+ *   followingProfiles: Array<object>
+ * }>} A follow state object for the current user.
+ */
 async function getCurrentUserFollowState() {
   const storedProfile = getProfile();
   const currentUserName = storedProfile?.name?.trim() || "";
@@ -68,6 +79,14 @@ function createFollowButtonMarkup(authorName, isFollowing) {
   `;
 }
 
+/**
+ * Creates the final markup for a feed post card, including the correct follow
+ * button state for the post author.
+ *
+ * @param {object} post - The post object to render.
+ * @param {object} followState - The current user's follow state.
+ * @returns {string} HTML string for a single feed post card.
+ */
 function createFeedCardMarkup(post, followState) {
   const authorName = post.author?.name?.trim() || "";
   const normalizedAuthorName = authorName.toLowerCase();
@@ -118,6 +137,13 @@ function createFollowingSidebarContent(followState) {
   `;
 }
 
+/**
+ * Renders a list of posts into the feed posts container.
+ * Displays an empty-state message when no posts match the current search.
+ *
+ * @param {Array<object>} postsToRender - The posts that should be displayed.
+ * @returns {void}
+ */
 function renderPosts(postsToRender) {
   const postsContainer = root.querySelector(".feed__posts");
   if (!postsContainer || !currentFollowState) return;
@@ -244,6 +270,13 @@ function updateFollowButtons(authorName, isFollowing, followState) {
   renderFollowingSidebar(followState);
 }
 
+/**
+ * Attaches interactive feed event handlers for sidebar toggling and
+ * follow/unfollow actions on post cards.
+ *
+ * @param {object} followState - The current user's follow state used to update UI state.
+ * @returns {void}
+ */
 function attachFeedEvents(followState) {
   root.addEventListener("click", async (event) => {
     const toggleButton = event.target.closest(".feed-sidebar-toggle");
@@ -290,6 +323,13 @@ function attachFeedEvents(followState) {
   document.addEventListener("click", handleOutsideSidebarClick);
 }
 
+/**
+ * Fetches posts and follow state, then renders the main feed page UI.
+ * Handles guest state, loading state, empty state, search filtering, and error state.
+ *
+ * @async
+ * @returns {Promise<void>}
+ */
 async function renderFeed() {
   const token = getToken();
 
