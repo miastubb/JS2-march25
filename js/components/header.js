@@ -18,12 +18,12 @@ export function renderHeader() {
 
   header.innerHTML = `
     <nav class="nav">
-      <a href="${BASE_PATH}index.html" class="nav__brand">App</a>
+      <a href="${BASE_PATH}index.html" class="nav__brand">The Wire&trade;</a>
       <div class="nav__links">
         ${
          token
    ? `
-      <a href="${BASE_PATH}pages/profile.html">Profile</a>
+      <a href="${BASE_PATH}pages/profile.html" class="nav__profile">Profile</a>
       <a href="${BASE_PATH}pages/create.html" class="nav__create">Create</a>
       <button id="logout-btn" type="button">Logout</button>
     `
