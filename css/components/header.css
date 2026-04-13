@@ -38,9 +38,12 @@ header {
 }
 
 .nav__brand {
-  font-size: var(--font-size-lg);
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-2xl);
+  letter-spacing: 0.06em;
   color: var(--color-text);
+  line-height: 1;
+  text-shadow: 0 0 8px rgba(115, 77, 135, 0.25);
 }
 
 .nav__links {
@@ -60,23 +63,44 @@ header {
   background: var(--color-surface);
   color: var(--color-text);
   text-decoration: none;
-  transition: background 0.2s ease, border-color 0.2s ease;
+  font-weight: 600;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
+
+.nav__profile {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+}
+
+.nav__profile:hover {
+  background: var(--color-surface-alt);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 12px #734d8726;
+}
+
+
 
 .nav__links a:hover,
 .nav__links button:hover {
-  background: var(--color-surface-alt);
-  border-color:var(--color-primary);
+  color: var(--color-text);
+  transform: translateY(-1px);
+
 }
 
-/* Primary action */
 .nav__create {
   background: var(--color-primary);
   border-color: var(--color-primary);
+  color: var(--color-text);
 }
 
 .nav__create:hover {
   background: var(--color-primary-hover);
+   border-color: var(--color-primary-hover);
+  box-shadow: 0 0 14px #734d8740;
 }
 
 .nav__links a:hover,
@@ -85,11 +109,15 @@ header {
 }
 
 #logout-btn {
+  background: transparent;
   border-color: var(--color-danger);
+  color: var(--color-text);
 }
 
 #logout-btn:hover {
-  background: var(--color-danger);
+   background: var(--color-danger);
+   border-color: var(--color-danger);
+   box-shadow: 0 0 12px rgba(239, 68, 68, 0.25);
 }
 
 @media (max-width: 768px) {

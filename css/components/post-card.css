@@ -1,24 +1,40 @@
 .post-card {
-  background: var(--color-surface);
+  background: linear-gradient(
+    180deg,
+    rgba(139, 92, 246, 0.05) 0%
+    rgba(139, 92, 246, 0) 100%
+  ), var(--color-surface-card);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 6px 18px #0000002e;
   height: 100%;
   display: flex;
   flex-direction: column;
+  transition: 
+  transform 0.2s ease, 
+  box-shadow 0.2s ease,
+  border-color 0.2s ease,
+  background-color 0.2s ease;
+}
 
+.post-card:hover {
+  transform: translate3d(2px, 6px, 10px);
+  border-color: var(--color-primary);
+  box-shadow: 0 14px 30px #734d874a;
 }
 
 .post-card__media-link {
   display: block;
+  overflow: hidden;
 }
 
 .post-card__content {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: var(--space-4);
+  padding: var(--space-5);
+  gap: var(--space-3);
 }
 
 .post-card__content-link {
@@ -37,18 +53,25 @@
   width: 100%;
   height: 220px;
   object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.post-card:hover .post-card__image {
+  transform: scale(1.02);
 }
 
 .post-card__title {
-  margin: 0 0 var(--space-2);
-  font-size: var(--font-size-lg);
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: var(--color-text);
 }
 
 .post-card__body {
   margin: 0 0 var(--space-3);
   color: var(--color-text-muted);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 .post-card__meta {
@@ -58,12 +81,19 @@
   gap: var(--space-3);
   margin-top: auto;
   padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .post-card__author {
   margin: 0;
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.post-card__author:hover {
+  color: var(--color-primary);
 }
 
 .post-card__actions {
@@ -77,17 +107,22 @@
   align-items: center;
   justify-content: center;
   padding: 0.5rem 0.85rem;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border-strong);
   border-radius: var(--radius-md);
   background: var(--color-surface-alt);
   color: var(--color-text);
   font-size: var(--font-size-sm);
   font-weight: 600;
+  transition: 
+  background-color 0.2s ease,
+  border-color 0.2s ease,
+  transform 0.2s ease;
 }
 
 .post-card__follow-btn:hover {
   border-color: var(--color-primary);
   background: var(--color-surface);
+  transform: translateY(-1px);
 }
 
 .post-card__follow-btn:disabled {
