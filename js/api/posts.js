@@ -15,7 +15,7 @@ export function getPosts({ limit = 12, sort = "created", sortOrder = "desc" } = 
 export function getPostById(id) {
   if (!id) throw new Error("Post ID is required");
 
-  return apiRequest(`/social/posts/${id}?_author=true&_comments=true`);
+  return apiRequest(`/social/posts/${id}?_author=true&_comments=true&_reactions=true`);
 }
 
 export function createPost(data) {
