@@ -25,48 +25,56 @@ export function createPostCard(post, options = {}) {
   const author = post.author?.name || "Unknown author";
   const media = post.media?.url || "";
   const alt = post.media?.alt || post.title || "Post image";
+  const commentCount = post._count?.comments ?? 0;
   const isOwner =
   currentUserName &&
   author &&
   currentUserName.trim().toLowerCase() === author.trim().toLowerCase();
  
-  return `
-    <article class="post-card">
-      <a
-       class="post-card__media-link" 
-       href="${ROUTES.post(post.id)}" 
-       aria-label="View post: ${post.title || "Untitled Post"}"
-       >
-        ${
-          media
-            ? `<img
-                class="post-card__image"
-                src="${media}"
-                alt="${alt}"
-                fetchpriority="high"
-              >`
-            : ""
-        }
+ return `
+  <article class="post-card">
+    <a
+      class="post-card__media-link"
+      href="${ROUTES.post(post.id)}"
+      aria-label="View post: ${post.title || "Untitled Post"}"
+    >
+      ${
+        media
+          ? `<img
+              class="post-card__image"
+              src="${media}"
+              alt="${alt}"
+              fetchpriority="high"
+            >`
+          : ""
+      }
+    </a>
+
+    <div class="post-card__content">
+      <a class="post-card__content-link" href="${ROUTES.post(post.id)}">
+        <h2 class="post-card__title">${post.title || "Untitled Post"}</h2>
+        <p class="post-card__body">${trimmedBody}</p>
       </a>
 
-      <div class="post-card__content">
-        <a class="post-card__content-link" href="${ROUTES.post(post.id)}">
-          <h2 class="post-card__title">${post.title || "Untitled Post"}</h2>
-          <p class="post-card__body">${trimmedBody}</p>
+      <div class="post-card__meta">
+        <a
+          class="post-card__author"
+          href="${ROUTES.profile(author)}"
+        >
+          By ${author}
         </a>
 
-        <div class="post-card__meta">
-          <a 
-            class="post-card__author" 
-            href="${ROUTES.profile(author)}"
-         >
-            By ${author}
-         </a>
-          ${
-            !isOwner && actionMarkup
-             ? `<div class="post-card__actions">${actionMarkup}</div>` : ""}
-        </div>
+        ${
+          !isOwner && actionMarkup
+            ? `<div class="post-card__actions">${actionMarkup}</div>`
+            : ""
+        }
       </div>
-    </article>
-  `;
+
+      <a class="post-card__comments" href="${ROUTES.post(post.id)}">
+        Comments (${commentCount})
+      </a>
+    </div>
+  </article>
+`;
 }
