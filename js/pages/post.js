@@ -3,6 +3,8 @@ import { getPostById, deletePost } from "../api/posts.js";
 import { getProfile } from "../storage/profile.js";
 import { getToken } from "../storage/token.js";
 import { createButton } from "../components/button.js";
+import { renderComments } from "../components/comments.js";
+import { createComment } from "../api/comments.js";
 
 const root = document.getElementById("app");
 
@@ -23,6 +25,36 @@ function getPostIdFromUrl() {
  * @async
  * @returns {Promise<void>}
  */
+function attachCommentForm(postId) {
+  const form = root.querySelector("#comment-form");
+  const textarea = root.querySelector("#comment-body");
+  const message = root.querySelector("#comment-message");
+
+  if (!form || !textarea || !message) return;
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const body = textarea.value.trim();
+
+    if (!body) {
+      message.textContent = "Comment cannot be empty.";
+      return;
+    }
+
+    message.textContent = "Posting comment...";
+
+    try {
+      await createComment(postId, body);
+      textarea.value = "";
+      message.textContent = "Comment posted.";
+      await renderPost();
+    } catch (error) {
+      console.error("Failed to create comment:", error);
+      message.textContent = "Unable to post comment right now. Please try again.";
+    }
+  });
+}
 async function renderPost() {
   const token = getToken();
 
@@ -58,6 +90,8 @@ async function renderPost() {
       return;
     }
 
+    const comments = post.comments || [];
+
     const profile = getProfile();
     const currentUserName = profile?.name?.trim().toLowerCase();
     const ownerName = post.author?.name?.trim().toLowerCase();
@@ -88,7 +122,9 @@ async function renderPost() {
             : ""
         }
       </article>
+      ${renderComments(comments)}
     `;
+    attachCommentForm(post.id);
 
     if (isOwner) {
       const actionsContainer = document.querySelector(".post__actions");
