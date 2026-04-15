@@ -7,6 +7,7 @@ export function getPosts({ limit = 12, sort = "created", sortOrder = "desc" } = 
     sortOrder,
     _author: "true",
     _count: "true",
+    _reactions: "true",
   });
 
   return apiRequest(`/social/posts?${params.toString()}`);

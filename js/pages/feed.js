@@ -9,6 +9,7 @@ import { getToken } from "../storage/token.js";
 import { getProfile } from "../storage/profile.js";
 import { BASE_PATH } from "../api/config.js";
 import { ROUTES } from "../config/routes.js";
+import { reactToPost } from "../api/reactions.js";
 
 const root = document.getElementById("app");
 let allPosts = [];
@@ -87,15 +88,35 @@ function createFollowButtonMarkup(authorName, isFollowing) {
  * @param {object} followState - The current user's follow state.
  * @returns {string} HTML string for a single feed post card.
  */
+
+function getReactionCount(reactions = [], symbol = "👍") {
+  const match = reactions.find((reaction) => reaction.symbol === symbol);
+  return match?.count ?? 0;
+}
+
 function createFeedCardMarkup(post, followState) {
   const authorName = post.author?.name?.trim() || "";
   const normalizedAuthorName = authorName.toLowerCase();
   const isFollowing = followState.followingNames.has(normalizedAuthorName);
 
   const actionMarkup = createFollowButtonMarkup(authorName, isFollowing);
+  const reactionCount = getReactionCount(post.reactions, "👍");
+
+  const reactionMarkup = `
+    <button
+      type="button"
+      class="post-card__reaction-btn"
+      data-react-post="${post.id}"
+      data-reaction-symbol="👍"
+      aria-label="Toggle thumbs up reaction"
+    >
+      👍 <span class="post-card__reaction-count">${reactionCount}</span>
+    </button>
+  `;
 
   return createPostCard(post, {
     actionMarkup,
+    reactionMarkup,
     currentUserName: followState.currentUserName,
   });
 }
@@ -293,7 +314,27 @@ function attachFeedEvents(followState) {
 
       return;
     }
+    
+   const reactionButton = event.target.closest("[data-react-post]");
+   if (reactionButton) {
+      const postId = reactionButton.dataset.reactPost;
+      const symbol = reactionButton.dataset.reactionSymbol;
 
+      if (!postId || !symbol) return;
+
+      reactionButton.disabled = true;
+
+      try {
+        await reactToPost(postId, symbol);
+        await renderFeed();
+      } catch (error) {
+        console.error("Failed to update reaction:", error);
+        reactionButton.disabled = false;
+        window.alert("Unable to update reaction right now. Please try again.");
+      }
+
+      return;
+    }
     const button = event.target.closest("[data-follow-author]");
     if (!button) return;
 
@@ -390,6 +431,8 @@ async function renderFeed() {
 
         <input
           type="search"
+          id="feed-search"
+          name="feed-search"
           class="feed-search"
           placeholder="Search posts..."
           aria-label="Search posts"

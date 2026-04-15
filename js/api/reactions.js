@@ -12,13 +12,18 @@ export async function reactToPost(postId, symbol) {
   if (!token) throw new Error("Missing auth token");
   if (!apiKey) throw new Error("Missing API key");
 
-  const response = await fetch(`${CONFIG.BASE_URL}/social/posts/${postId}/react/${symbol}`, {
-    method: "PUT",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "X-Noroff-API-Key": apiKey,
-    },
-  });
+  const encodedSymbol = encodeURIComponent(symbol);
+
+  const response = await fetch(
+    `${CONFIG.BASE_URL}/social/posts/${postId}/react/${encodedSymbol}`,
+    {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "X-Noroff-API-Key": apiKey,
+      },
+    }
+  );
 
   const data = await response.json().catch(() => null);
 

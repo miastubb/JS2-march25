@@ -8,7 +8,7 @@ import { createComment } from "../api/comments.js";
 import { reactToPost } from "../api/reactions.js";
 
 const root = document.getElementById("app");
-const REACTIONS = ["👍", "❤️", "😂", "🔥"];
+const REACTIONS = ["👍",];
 
 /**
  * Reads the post ID from the current page URL query string.
@@ -112,20 +112,16 @@ function attachReactionEvents(postId) {
   reactionButtons.forEach((button) => {
     button.addEventListener("click", async () => {
       const symbol = button.dataset.reaction;
-
       if (!symbol) return;
+
+      reactionButtons.forEach((btn) => {
+        btn.disabled = true;
+      });
 
       try {
         button.disabled = true;
-        const result = await reactToPost(postId, symbol);
-
-       const updatedReaction = result.data.reactions.find(r => r.symbol === symbol);
-       const newCount = updatedReaction?.count ?? 0;
-
-       const countEl = button.querySelector(".post-reactions__count");
-       if (countEl) {
-           countEl.textContent = newCount;
-    }  
+        await reactToPost(postId, symbol);
+        await renderPost();
       } catch (error) {
         console.error("Failed to update reaction:", error);
         window.alert("Unable to update reaction right now. Please try again.");
