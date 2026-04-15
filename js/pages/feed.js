@@ -374,14 +374,27 @@ function attachFeedEvents(followState) {
 async function renderFeed() {
   const token = getToken();
 
-  if (!token) {
+     if (!token) {
     root.innerHTML = `
-      <section class="guest-state">
-        <h1>Welcome</h1>
-        <p>Please log in or register to view the posts.</p>
-        <div class="guest-state__actions">
-          <a class="button" href="${BASE_PATH}pages/login.html">Login</a>
-          <a class="button" href="${BASE_PATH}pages/register.html">Register</a>
+      <section class="guest-state" aria-labelledby="guest-state-title">
+        <div class="guest-state__content">
+          <h1 class="guest-state__eyebrow">Welcome to The Wire</h1>
+          <p id="guest-state-title" class="guest-state__title">
+            Follow posts, join the conversation, and share your own updates.
+          </p>
+          <p class="guest-state__text">
+            Log in to explore the feed, react to posts, comment on discussions,
+            and connect with other users.
+          </p>
+
+          <div class="guest-state__actions">
+            <a class="guest-state__button guest-state__button--primary" href="${BASE_PATH}pages/login.html">
+              Log in
+            </a>
+            <a class="guest-state__button guest-state__button--secondary" href="${BASE_PATH}pages/register.html">
+              Register
+            </a>
+          </div>
         </div>
       </section>
     `;
