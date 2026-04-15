@@ -14,6 +14,7 @@ import { ROUTES } from "../config/routes.js";
 export function createPostCard(post, options = {}) {
   const {
     actionMarkup = "",
+    reactionMarkup = "",
     currentUserName = "",
   } = options;
 
@@ -70,6 +71,12 @@ export function createPostCard(post, options = {}) {
             : ""
         }
       </div>
+
+            ${
+        reactionMarkup
+          ? `<div class="post-card__reactions">${reactionMarkup}</div>`
+          : ""
+      }
 
       <a class="post-card__comments" href="${ROUTES.post(post.id)}">
         Comments (${commentCount})
