@@ -13,7 +13,7 @@
 
   --color-primary: #8b5cf6;
   --color-primary-hover: #7c3aed;
-  --color-secondary: #38bdf8;
+  --color-secondary: #3a0a64;
 
   --color-success: #22c55e;
   --color-danger: #ef4444;
@@ -43,4 +43,5 @@
   --font-size-lg: 1.125rem;
   --font-size-xl: 1.5rem;
   --font-size-2xl: 2rem;
+  --font-size-3xl: 2.5rem;
 }
