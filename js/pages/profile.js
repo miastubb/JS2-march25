@@ -1,5 +1,5 @@
 import { getProfile } from "../storage/profile.js";
-import { getPosts } from "../api/posts.js";
+import { getPostsByProfile } from "../api/posts.js";
 import { createPostCard } from "../components/postCard.js";
 import { requireAuth } from "../auth/guard.js";
 import { getUserProfileByName } from "../api/profiles.js";
@@ -13,7 +13,6 @@ async function renderProfile() {
 
 const params = new URLSearchParams(window.location.search);
 const profileNameFromURL = params.get("name");
-
 const storedProfile = getProfile();
 
 if (!storedProfile) {
@@ -28,10 +27,8 @@ const isOwnProfile = username === currentUsername;
   try {
      const profileData = await getUserProfileByName(username);
 
-     const response = await getPosts({ limit: 20 });
-     const posts = response.data || [];
-
-     const userPosts = posts.filter((post) => post.author?.name === username);
+     const response = await getPostsByProfile(username, { limit: 20 });
+     const userPosts = response.data || [];
 
     const localAvatar = "../assets/images/profile-illustration-bw-cats.webp";
     const avatarMarkup = `<img

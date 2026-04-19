@@ -1,0 +1,7 @@
+.auth-alt {
+  color: var(--color-text);
+  font-size: var(--font-size-lg);  
+}
+.auth-alt a:hover {
+  color: var(--color-primary-hover);
+}

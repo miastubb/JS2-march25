@@ -1,7 +1,7 @@
 .post-card {
   background: linear-gradient(
     180deg,
-    rgba(139, 92, 246, 0.05) 0%
+    rgba(139, 92, 246, 0.05) 0%,
     rgba(139, 92, 246, 0) 100%
   ), var(--color-surface-card);
   border: 1px solid var(--color-border);
@@ -94,6 +94,11 @@
 
 .post-card__author:hover {
   color: var(--color-primary);
+}
+
+.post-card__comments {
+  color: var(--color-login);
+
 }
 
 .post-card__actions {
