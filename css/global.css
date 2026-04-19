@@ -3,6 +3,7 @@
 @import url("./pages/feed.css");
 @import url("./components/header.css");
 @import url("./pages/guest-state.css");
+@import url("./pages/login.css");
 
 *,
 *::before,
@@ -30,14 +31,6 @@ img {
   max-width: 100%;
 }
 
-a {
-  color: var(--color-primary);
-  text-decoration: none;
-}
-
-a:hover {
-  color: var(--color-primary-hover);
-}
 
 button,
 input,
@@ -181,3 +174,23 @@ p {
   gap: 2rem;
 }
 
+.feed-sidebar__title {
+  font-size: var(--font-size-lg);
+  color: var(--color-login);
+}
+
+.auth-alt {
+  color: var(--color-text);
+  font-size: var(--font-size-lg);
+}
+
+.auth-alt a {
+  color: var(--color-login);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.auth-alt a:hover,
+.auth-alt a:focus-visible {
+  color: var(--color-primary-hover);
+}

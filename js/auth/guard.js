@@ -5,6 +5,6 @@ export function requireAuth() {
   const token = getToken();
 
   if (!token) {
-    window.location.href = `${BASE_PATH}account/login.html`;
+    window.location.href = `${BASE_PATH}pages/login.html`;
   }
 }

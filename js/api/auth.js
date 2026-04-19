@@ -33,7 +33,7 @@ export async function loginUser(email, password) {
    const apiKey = apiKeyResponse?.data?.key;
 
    if (!apiKey) {
-    throw new Error("Login succeded but no API key was created");
+    throw new Error("Login succeeded but no API key was created");
 
    }
 

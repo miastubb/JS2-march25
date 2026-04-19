@@ -14,6 +14,13 @@ export async function getUserProfileByName(name) {
   return response.data;
 }
 
+/**
+ * Follows a user profile by name.
+ *
+ * @async
+ * @param {string} name - The username of the profile to follow.
+ * @returns {Promise<object>} The updated follow response data.
+ */
 export async function followProfile(name) {
   const response = await apiRequest(
     `/social/profiles/${encodeURIComponent(name)}/follow`,
@@ -25,6 +32,13 @@ export async function followProfile(name) {
   return response.data;
 }
 
+/**
+ * Unfollows a user profile by name.
+ *
+ * @async
+ * @param {string} name - The username of the profile to unfollow.
+ * @returns {Promise<object>} The updated unfollow response data.
+ */
 export async function unfollowProfile(name) {
   const response = await apiRequest(
     `/social/profiles/${encodeURIComponent(name)}/unfollow`,

@@ -15,6 +15,7 @@ const root = document.getElementById("app");
 let allPosts = [];
 let currentFollowState = null;
 const MOBILE_BREAKPOINT = 768;
+let feedEventsAttached = false;
 
 /**
  * Fetches the logged-in user's follow data and returns a normalized follow state
@@ -80,6 +81,11 @@ function createFollowButtonMarkup(authorName, isFollowing) {
   `;
 }
 
+function getReactionCount(reactions = [], symbol = "👍") {
+  const match = reactions.find((reaction) => reaction.symbol === symbol);
+  return match?.count ?? 0;
+}
+
 /**
  * Creates the final markup for a feed post card, including the correct follow
  * button state for the post author.
@@ -88,11 +94,6 @@ function createFollowButtonMarkup(authorName, isFollowing) {
  * @param {object} followState - The current user's follow state.
  * @returns {string} HTML string for a single feed post card.
  */
-
-function getReactionCount(reactions = [], symbol = "👍") {
-  const match = reactions.find((reaction) => reaction.symbol === symbol);
-  return match?.count ?? 0;
-}
 
 function createFeedCardMarkup(post, followState) {
   const authorName = post.author?.name?.trim() || "";
@@ -295,10 +296,12 @@ function updateFollowButtons(authorName, isFollowing, followState) {
  * Attaches interactive feed event handlers for sidebar toggling and
  * follow/unfollow actions on post cards.
  *
- * @param {object} followState - The current user's follow state used to update UI state.
  * @returns {void}
  */
-function attachFeedEvents(followState) {
+function attachFeedEvents() {
+  if (feedEventsAttached) return;
+  feedEventsAttached = true;
+
   root.addEventListener("click", async (event) => {
     const toggleButton = event.target.closest(".feed-sidebar-toggle");
     if (toggleButton) {
@@ -324,19 +327,28 @@ function attachFeedEvents(followState) {
 
       reactionButton.disabled = true;
 
-      try {
-        await reactToPost(postId, symbol);
-        await renderFeed();
-      } catch (error) {
-        console.error("Failed to update reaction:", error);
-        reactionButton.disabled = false;
-        window.alert("Unable to update reaction right now. Please try again.");
-      }
+    try {
+      const currentScrollY = window.scrollY;
+
+      await reactToPost(postId, symbol);
+      await renderFeed();
+
+      requestAnimationFrame(() => {
+        window.scrollTo({
+          top: currentScrollY,
+          behavior: "auto",
+      });
+   });
+}  catch (error) {
+   console.error("Failed to update reaction:", error);
+   reactionButton.disabled = false;
+   window.alert("Unable to update reaction right now. Please try again.");
+}
 
       return;
     }
     const button = event.target.closest("[data-follow-author]");
-    if (!button) return;
+    if (!button || !currentFollowState) return;
 
     const authorName = button.dataset.followAuthor?.trim();
     if (!authorName) return;
@@ -348,10 +360,10 @@ function attachFeedEvents(followState) {
     try {
       if (isFollowing) {
         await unfollowProfile(authorName);
-        updateFollowButtons(authorName, false, followState);
+        updateFollowButtons(authorName, false, currentFollowState);
       } else {
         await followProfile(authorName);
-        updateFollowButtons(authorName, true, followState);
+        updateFollowButtons(authorName, true, currentFollowState);
       }
     } catch (error) {
       console.error("Failed to update follow state:", error);
@@ -460,7 +472,7 @@ async function renderFeed() {
 
   renderFollowingSidebar(followState);
   syncSidebarVisibility();
-  attachFeedEvents(followState);
+  attachFeedEvents();
 
   const searchInput = root.querySelector(".feed-search");
 
@@ -483,11 +495,10 @@ async function renderFeed() {
       renderPosts(filteredPosts);
     });
   }
-
 } catch (error) {
   console.error("Failed to load feed:", error);
   root.innerHTML = "<p>Unable to load posts right now. Please try again shortly.</p>";
-}
+ }
 }
 
 renderFeed();
